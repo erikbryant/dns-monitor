@@ -1,29 +1,29 @@
-#!/bin/bash
+#!/bin/zsh
 
 function pinger() {
   host=$1
-  LOG=stats.${host?}
 
-  START=$( date +%s )
-  ping -c 1 ${host?} 2>&1 | head -2 | egrep -v "^PING" >> ${LOG?}
-  STATUS=${PIPESTATUS[0]}
-  STOP=$( date +%s )
-
-  ELAPSED=$(( ${STOP?} - ${START?} ))
-  echo "${ELAPSED?}  -  $( date )" >> ${LOG?}
-
-  if [[ ${STATUS?} -ne 0 ]] ; then
-    echo "$( date )  -  DNS fail ${host?}"
+  RESULT=$( ping -c 1 ${host?} 2>&1 )
+  if [[ $? -ne 0 ]] ; then
+    date
+    echo ${RESULT?}
+    echo
+    echo
+    return 1
   fi
 
-  return ${STATUS?}
+  return 0
 }
 
-HOSTS="google.com wsj.com nytimes.com apple.com"
+TOTAL=0
+FAILS=0
 
 while [[ 1 ]] ; do
-  for host in ${HOSTS?} ; do
-    pinger ${host?} &
+  for host in google.com wsj.com nytimes.com apple.com ; do
+    TOTAL=$(( ${TOTAL?} + 1 ))
+    pinger ${host?}
+    FAILS=$(( ${FAILS?} + $? ))
   done
+  echo -n "${FAILS?} / ${TOTAL?}                                           \r"
   sleep 2
 done
