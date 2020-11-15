@@ -16,15 +16,20 @@ function pinger() {
 }
 
 TOTAL=0
-FAILS=0
+DNS_FAILS=0
+NET_FAILS=0
 
 while [[ 1 ]] ; do
-  # for host in google.com wsj.com nytimes.com apple.com ; do
-  for host in po-2-rur01.sfpine.ca.sfba.comcast.net ; do
-    TOTAL=$(( ${TOTAL?} + 1 ))
-    pinger ${host?}
-    FAILS=$(( ${FAILS?} + $? ))
-  done
-  echo -n "${FAILS?} / ${TOTAL?}                                           \r"
+  TOTAL=$(( ${TOTAL?} + 1 ))
+
+  host=po-2-rur01.sfpine.ca.sfba.comcast.net
+  pinger ${host?}
+  DNS_FAILS=$(( ${DNS_FAILS?} + $? ))
+
+  host=96.120.95.37
+  pinger ${host?}
+  NET_FAILS=$(( ${NET_FAILS?} + $? ))
+
+  echo -n "Network: ${NET_FAILS?} / ${TOTAL?}   DNS: ${DNS_FAILS?} / ${TOTAL?}      \r"
   sleep 2
 done
