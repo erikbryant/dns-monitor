@@ -19,7 +19,8 @@ TOTAL=0
 FAILS=0
 
 while [[ 1 ]] ; do
-  for host in google.com wsj.com nytimes.com apple.com ; do
+  # for host in google.com wsj.com nytimes.com apple.com ; do
+  for host in po-2-rur01.sfpine.ca.sfba.comcast.net ; do
     TOTAL=$(( ${TOTAL?} + 1 ))
     pinger ${host?}
     FAILS=$(( ${FAILS?} + $? ))
