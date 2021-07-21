@@ -5,6 +5,8 @@ function pinger() {
 
   RESULT=$( ping -c 1 ${host?} 2>&1 )
   if [[ $? -ne 0 ]] ; then
+    echo
+    echo '~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'
     date
     echo ${RESULT?}
     echo
